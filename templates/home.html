@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <form method="post"> {% csrf_token %}
+                    <h1 class="text-white text-center">Welcome back {{name}}</h1>
+                    <!-- {{form}} -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <p class="text-primary text-center">{{ message }}</p>
+                            {% else %}
+                                <p class="text-danger text-center">{{message}}</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <input type="text" name="content" placeholder="content" class="form-control mt-5">
+                    <button type="submit" class="btn btn-secondary form-control mb-3">Add Task</button>
+                    <a href="{% url 'logout' %}" class="btn btn-primary form-control">Logout</a>
+                    <p class="text-white mt-3">Finished Tasks: {{comp}} &nbsp;<span>|</span>&nbsp; Unfinished Tasks: {{uncomp}}</p>
+
+                    <div class="container">
+                        {% for tsk in all %}
+                            <div class="container mb-3 task d-flex flex-row align-items-center">
+                                <a href="{% url 'update' tsk.id %}" class="btn btn-primary me-1" id="xy">Update</a>
+                                <a href="{% url 'delete' tsk.id %}" class="btn btn-danger">delete</a>
+                                {% if tsk in comp1 %}
+                                    <p class="ms-2 mt-3" style="text-decoration: line-through;">{{tsk}}</p>
+                                {% else %}
+                                    <p class="ms-2 mt-3">{{tsk}}</p>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+body{
+    background-image: linear-gradient(to right, #6c5ce7 0%, #4c3d9f 50%, #2c1e66 100%);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+input{
+    height: 70px;
+    margin-bottom: 10px;
+    border: none;
+    font-size: 15px;
+}
+form{
+    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 30px;
+    /* background-color: red; */
+    backdrop-filter: blur(10px);
+}
+
+#bg_vid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+}
+.task{
+    height: 100px;
+    background-color: rgb(190, 179, 179);
+    padding: 8px;
+    border-radius: 10px;
+}
+.strike{
+    text-decoration: line-through;
+}

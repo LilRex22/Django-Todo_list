@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-6">
+                <form method="post" > {% csrf_token %}
+                    <h1 class="text-center fw-bold text-white my-3">Welcome back</h1>
+                    <!-- {{form}} -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <p class="text-danger text-center">{{message}}</p>
+                            {% else %}
+                                <p class="text-primary text-center">{{ message }}</p>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <input type="text" name="username" placeholder="Username", class="form-control" required>
+                    <input type="password" name="password1" placeholder="password" class="form-control" required>
+                    <button type="submit" class="btn btn-secondary form-control">Login</button>
+                    <p class="text-white text-center mt-2">Do not have an account?</p>
+                    <a href="{% url 'register' %}" class="btn btn-primary form-control">Register</a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
