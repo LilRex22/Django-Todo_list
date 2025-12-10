@@ -45,8 +45,7 @@ def home(request):
         'name': name,
         'comp': len(completed),
         'uncomp': len(uncompleted),
-        'all': alltasks,
-        'comp1': completed
+        'all': alltasks
         })
 
 

@@ -27,10 +27,10 @@
                             <div class="container mb-3 task d-flex flex-row align-items-center">
                                 <a href="{% url 'update' tsk.id %}" class="btn btn-primary me-1" id="xy">Update</a>
                                 <a href="{% url 'delete' tsk.id %}" class="btn btn-danger">delete</a>
-                                {% if tsk in comp1 %}
-                                    <p class="ms-2 mt-3" style="text-decoration: line-through;">{{tsk}}</p>
+                                {% if tsk.completed %}
+                                    <p class="ms-2 mt-3" style="text-decoration: line-through;">{{tsk.content}}</p>
                                 {% else %}
-                                    <p class="ms-2 mt-3">{{tsk}}</p>
+                                    <p class="ms-2 mt-3">{{tsk.content}}</p>
                                 {% endif %}
                             </div>
                         {% endfor %}
