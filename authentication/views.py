@@ -21,9 +21,13 @@ def home(request):
     
     
     name = request.user.username
-    alltasks = Todo.objects.filter(user=request.user)
-    completed = Todo.objects.filter(completed=True, user=request.user)
-    uncompleted = Todo.objects.filter(completed=False, user=request.user)
+    # order_by changes the ordering of the todo events
+    alltasks = Todo.objects.filter(user=request.user).order_by('-timestamp')
+
+    # get the finished and unfinished task count from the alltask object
+    completed = alltasks.filter(completed=True, user=request.user).count()
+    uncompleted = alltasks.filter(completed=False, user=request.user).count()
+
     if request.method == 'POST':
         user = request.user
         content = request.POST.get('content')
@@ -43,24 +47,37 @@ def home(request):
         
     return render(request, 'home.html', {
         'name': name,
-        'comp': len(completed),
-        'uncomp': len(uncompleted),
+        'comp': completed,
+        'uncomp': uncompleted,
         'all': alltasks
         })
 
 
 def delete_task(request, p_id):
-    obj = Todo.objects.get(id=p_id)
-    obj.delete()
-    messages.success(request, 'Task deleted successfully')
-    return redirect('home')
+    # a try-except was used so incase a user manually inputs a p_id that doesn't exist.
+    try:
+        obj = Todo.objects.get(id=p_id)
+        obj.delete()
+        messages.success(request, 'Task deleted successfully')
+        return redirect('home')
+    except Todo.DoesNotExist:
+        messages.error(request, 'No task at specified id')
+        return redirect('home')
 
 def update_task(request, p_id):
-    obj = Todo.objects.get(id=p_id)
-    obj.completed = True
-    obj.save()
-    return redirect('home')
-
+    try:    
+        obj = Todo.objects.get(id=p_id)
+        # the conditional below will enable toggling b/w setting a task completed or not completed
+        if obj.completed:
+            obj.completed = False
+        else:
+            obj.completed = True
+        obj.save()
+        return redirect('home')
+    except Todo.DoesNotExist:
+        messages.error(request, 'No task at specified id')
+        return redirect('home')
+        
 def register_user(request):
     # form = RegisterForm(request.POST)
     # if request.method == 'POST':
@@ -68,8 +85,8 @@ def register_user(request):
     #         form.save()
     
     # ensures that the register page cannot be accessed by an already logged in user.
-    if request.user.is_authenticate:
-        return redirect('home')
+    # if request.user.is_authenticate:
+    #     return redirect('home')
     
     if request.method == 'POST':
         username = request.POST.get('username')
